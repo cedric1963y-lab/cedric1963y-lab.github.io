@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>サポート & お問い合わせ - BIO SURVIVOR</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../style.css">
+</head>
+<body>
+    <header>
+        <h1>サポート & お問い合わせ</h1>
+        <p>「BIO SURVIVOR」に関するご質問・不具合報告・ご意見窓口</p>
+    </header>
+
+    <main>
+        <a href="../index.html" class="back-link">← トップに戻る</a>
+
+        <div class="card">
+            <h2>連絡先</h2>
+            <p>メール：<a href="mailto:suzukihayato.apps@gmail.com" style="color: #60a5fa;">suzukihayato.apps@gmail.com</a><br>
+            開発者：HAYATO SUZUKI</p>
+        </div>
+
+        <div class="card">
+            <h2>お問い合わせフォーム</h2>
+            <p>ご入力いただいた内容をもとに、お使いのメールアプリを起動してお問い合わせを送信します。</p>
+            
+            <form id="contactForm">
+                <div class="form-group">
+                    <label for="subjectInput">件名</label>
+                    <input type="text" id="subjectInput" placeholder="不具合報告、ご要望、ご質問など" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="messageText">お問い合わせ内容</label>
+                    <textarea id="messageText" rows="6" placeholder="具体的な症状や端末情報（iOSバージョン、端末機種など）をご記載ください。" required></textarea>
+                </div>
+
+                <button type="submit" class="btn">メールを作成する</button>
+            </form>
+        </div>
+
+        <div class="card">
+            <h2>よくあるご質問 (FAQ)</h2>
+            <p><strong>Q. 遊び方を教えてください。</strong><br>
+            A. 画面のどこでも親指でドラッグすると、その場所を起点にジョイスティックが現れて移動できます。攻撃は自動で行われます。タイトル画面の「マニュアル」からも確認できます。</p>
+
+            <p style="margin-top: 1rem;"><strong>Q. アプリを削除するとデータはどうなりますか？</strong><br>
+            A. ハイスコアや強化状況などのデータは端末内にのみ保存されているため、アプリを削除すると消去されます。</p>
+
+            <p style="margin-top: 1rem;"><strong>Q. 広告のトラッキング許可を後から変更できますか？</strong><br>
+            A. iPhoneの「設定」＞「プライバシーとセキュリティ」＞「トラッキング」から、いつでも変更できます。</p>
+
+            <p style="margin-top: 1rem;"><strong>Q. 動画広告が再生されない場合があります。</strong><br>
+            A. ネットワーク接続環境が不安定な場合や、広告配信サーバー側の在庫状況により準備に数秒かかる場合がございます。通信環境の良い場所で再度お試しください。</p>
+        </div>
+
+        <script>
+            document.getElementById('contactForm').addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                const subject = document.getElementById('subjectInput').value;
+                const bodyText = document.getElementById('messageText').value;
+                const mailTo = "suzukihayato.apps@gmail.com";
+                
+                const emailSubject = encodeURIComponent(`[BIO SURVIVOR お問い合わせ] ${subject}`);
+                const emailBody = encodeURIComponent(
+                    `--- アプリ情報 ---\n` +
+                    `対象アプリ: BIO SURVIVOR\n` +
+                    `-----------------\n\n` +
+                    `お問い合わせ内容:\n${bodyText}`
+                );
+                
+                window.location.href = `mailto:${mailTo}?subject=${emailSubject}&body=${emailBody}`;
+            });
+        </script>
+
+        <div class="nav-links">
+            <a href="../index.html">トップページ</a>
+            <a href="privacy.html">プライバシーポリシー</a>
+        </div>
+    </main>
+</body>
+</html>
