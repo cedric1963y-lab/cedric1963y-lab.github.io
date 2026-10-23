@@ -21,12 +21,62 @@
   (function(){var f=window.fetch;window.fetch=function(u){if(typeof u==='string'&&/^\/(test)?log\?/.test(u))return Promise.resolve(new Response(''));return f.apply(this,arguments);};})();</script>
 
   <!-- ES Module Import Map (Local Three.js 0.169.0 + @pixiv/three-vrm 3.1.2 for Offline App) -->
+<style>html,body{background:#04040a;}#tdr-fatal{position:fixed;inset:0;z-index:2147483647;background:#04040a;color:#fff;display:none;align-items:center;justify-content:center;padding:24px;font-family:system-ui,"Yu Gothic UI","Meiryo",sans-serif;text-align:center}#tdr-fatal .b{max-width:560px}#tdr-fatal h2{font-size:18px;line-height:1.6;margin:0 0 12px;color:#ff4d6d}#tdr-fatal p{font-size:14px;line-height:1.7;margin:0 0 10px;color:#dde}#tdr-fatal small{display:block;font-size:11px;color:#889;word-break:break-all;margin-top:12px}#tdr-fatal a{color:#6fd6ff}</style>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@700;900&family=Orbitron:wght@700;900&display=swap" media="print" onload="this.media='all'" />
+  <script>
+  (function(){
+    window.__tdrReady=false;
+    function show(title,msg,detail){
+      function go(){
+        var d=document.getElementById('tdr-fatal');
+        if(!d){d=document.createElement('div');d.id='tdr-fatal';document.body.appendChild(d);}
+        d.innerHTML='<div class="b"><h2></h2><p></p><p><a href="./">再読み込み</a>　/　<a href="https://apps.apple.com/jp/app/tokyo-dead-run/id6825663927" target="_blank" rel="noopener">App Storeでアプリ版を見る</a></p><small></small></div>';
+        d.querySelector('h2').textContent=title;d.querySelectorAll('p')[0].textContent=msg;d.querySelector('small').textContent=detail||'';
+        d.style.display='flex';
+      }
+      if(document.body)go();else document.addEventListener('DOMContentLoaded',go);
+    }
+    window.__tdrFatal=show;
+    var GENERIC='読み込みに失敗しました。ChromeかEdgeの最新版で開いてみてください';
+    var GLMSG='この端末/ブラウザは3D表示に対応していません（ハードウェアアクセラレーションをオンにしてください）';
+    var shown=false;
+    function fail(detail){
+      if(shown||window.__tdrReady)return;shown=true;
+      var isGL=/webgl/i.test(String(detail));
+      show(isGL?GLMSG:GENERIC,isGL?'Chrome/Edgeの「設定 → システム → グラフィックアクセラレーションを使用する」をオンにして、ブラウザを再起動してください。':'Ctrl+F5（Macは⌘+Shift+R）で再読み込みしても直らない場合は、別のブラウザでお試しください。',String(detail).slice(0,300));
+    }
+    window.addEventListener('error',function(e){
+      if(e&&e.target&&e.target!==window&&e.target.tagName){ if(e.target.tagName==='SCRIPT')fail('script load error: '+(e.target.src||''));return; }
+      fail((e&&e.message?e.message:'error')+(e&&e.filename?' @ '+e.filename.split('/').pop()+':'+e.lineno:''));
+    },true);
+    window.addEventListener('unhandledrejection',function(e){var r=e&&e.reason;fail('Unhandled: '+(r&&(r.stack||r.message)||r));});
+    // WebGL check
+    try{
+      var c=document.createElement('canvas');
+      var gl=c.getContext('webgl2')||c.getContext('webgl')||c.getContext('experimental-webgl');
+      if(!gl){shown=true;show(GLMSG,'Chrome/Edgeの「設定 → システム → グラフィックアクセラレーションを使用する」をオンにして、ブラウザを再起動してください。','WebGL unavailable');}
+    }catch(err){shown=true;show(GLMSG,'','WebGL check error: '+err);}
+    // import map / ES module support
+    try{
+      if(!(window.HTMLScriptElement&&HTMLScriptElement.supports&&HTMLScriptElement.supports('importmap'))&&!shown){shown=true;show(GENERIC,'お使いのブラウザが古いため動作しません。','importmap not supported: '+navigator.userAgent);}
+    }catch(_){}
+    // mark ready when loading badge finishes; warn if stuck
+    document.addEventListener('DOMContentLoaded',function(){
+      var b=document.getElementById('vrm-status');if(!b)return;
+      var chk=function(){if(/準備完了/.test(b.textContent))window.__tdrReady=true;};
+      new MutationObserver(chk).observe(b,{childList:true,characterData:true,subtree:true});chk();
+      setTimeout(function(){if(!window.__tdrReady&&!shown){b.textContent='⏳ 読み込みに時間がかかっています…（通信環境をご確認ください）';}},45000);
+    });
+  })();
+  </script>
   <script type="importmap">
   {
     "imports": {
-      "three": "./lib/three.module.js",
+      "three": "./lib/three.module.js?v=20261023b",
       "three/addons/": "./lib/addons/",
-      "@pixiv/three-vrm": "./lib/three-vrm.module.min.js"
+      "@pixiv/three-vrm": "./lib/three-vrm.module.min.js?v=20261023b"
     }
   }
   </script>
@@ -48,7 +98,6 @@
   </script>
 
   <style>
-    @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@700;900&family=Orbitron:wght@700;900&display=swap');
 
     :root {
       --sat: env(safe-area-inset-top, 0px);
